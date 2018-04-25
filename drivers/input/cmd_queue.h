@@ -1,7 +1,9 @@
 #ifndef CMD_QUEUE_H
 #define CMD_QUEUE_H
 
-#define QUEUE_SIZE 16 // no more than 32 bytes of queue should be good
+#include <stdlib.h>
+
+#define QUEUE_SIZE 16 // no more than 32 bytes of queue should be good -- fine tune later
 
 struct queue_entry
 {
@@ -10,7 +12,7 @@ struct queue_entry
 };
 typedef struct queue_entry queue_entry_t;
 
-volatile static queue_entry_t queue[QUEUE_SIZE]; //ihdk if volatile is necessary here -- it might be
+static queue_entry_t queue[QUEUE_SIZE]; 
 
 int add_cmd(queue_entry_t entry);
 void run_cmds();

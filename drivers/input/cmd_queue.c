@@ -6,7 +6,10 @@ int add_cmd(queue_entry_t entry)
 {
 	queue[queue_index] = entry;
 	if(++queue_index >= QUEUE_SIZE)
+	{
+		queue_index--; //set it back down & return error code
 		return 1;
+	}
 	return 0;
 }
 
