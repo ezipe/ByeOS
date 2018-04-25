@@ -12,7 +12,7 @@ typedef struct queue_entry queue_entry_t;
 
 volatile static queue_entry_t queue[QUEUE_SIZE]; //ihdk if volatile is necessary here -- it might be
 
-void add_cmd(queue_entry_t* entry);
+int add_cmd(queue_entry_t entry);
 void run_cmds();
 
 #endif

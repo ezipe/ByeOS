@@ -182,7 +182,7 @@ static const char scancodes[] =
 	
 };
 
-static bool is_reading = false;
+static volatile bool is_reading = false;
 static int32_t char_index = 0;
 
 static char input_buffer[256];
