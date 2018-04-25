@@ -1,11 +1,3 @@
-
-export CC	= i686-elf-gcc
-export CFLAGS	=	-std=gnu99 -ffreestanding -g -c
-
-export AS		= nasm
-export ASFLAGS	=
-
-
 SOURCE	:= $(shell find -type f -name "*.c" -print)
 OBJ		:= $(SOURCE:.c=.o)
 

@@ -1,4 +1,4 @@
-#include <common.h>
+#include <stdlib.h>
 #include "descriptor_tables.h"
 #include "isr.h"
 #define GDT_ENTRY_NUM 5

@@ -1,5 +1,3 @@
-export AS		= nasm
-export ASFLAGS	=
 
 ASINC = -i include/ -g
 

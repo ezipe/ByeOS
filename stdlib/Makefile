@@ -1,9 +1,4 @@
 
-export CC	= i686-elf-gcc
-export CFLAGS	=	-std=gnu99 -ffreestanding -g -c
-
-export AS		= nasm
-export ASFLAGS	=
 
 
 SOURCE	:= $(shell find -type f -name "*.c" -print)
@@ -18,7 +13,7 @@ clean: $(shell rm -f $(OBJ))
 
 
 %.o: %.c
-	$(CC) $(CFLAGS) $< -I../ -o ./obj/$@ $(CLIB)
+	$(CC) $(CFLAGS) $< -I../ -I../stdlib -o ./obj/$@ $(CLIB)
 	
 %.o: %.asm
 	$(AS) $(ASFLAGS) -f elf32 $< -o ./obj/$@

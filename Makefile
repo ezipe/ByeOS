@@ -1,3 +1,10 @@
+
+export CC	= i686-elf-gcc
+export CFLAGS	=	-std=gnu99 -ffreestanding -g -c
+
+export AS		= nasm
+export ASFLAGS	=
+
 export LD				= i686-elf-gcc
 export LDFLAGS	= -T linker.ld -ffreestanding -nostdlib -g
 

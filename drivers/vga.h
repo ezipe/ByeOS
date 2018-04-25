@@ -1,7 +1,7 @@
 #ifndef VGA_H
 #define VGA_H
 
-#include "common.h"
+#include <stdlib.h>
  
 
 enum vga_color 

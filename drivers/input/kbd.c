@@ -1,6 +1,6 @@
 #include "kbd.h"
 #include <x86/isr.h>
-#include "vga.h"
+#include "../vga.h"
 
 static char res[256];
 
@@ -20,14 +20,28 @@ char* read_line()
 	return res;
 }
 
+static char get_scancode()
+{
+	char c = 0;
+	while(1)
+	{
+			if(inb(0x60)!=c)
+			{
+				c = inb(0x60);
+				if(c>0)
+					return c;
+			}
+	}
+}
+
 static void keyboard_callback(registers_t regs)
 {
 	char status = inb(0x64);
-    char scancode = inb(0x60);
+    char scancode = get_scancode();
 	
-	if(scancode > MAX_SCANCODE || scancode < 0)
+	if(scancode < 0)
 		return;
-	char ascii = scancodes[scancode];	
+	char ascii = scancodes[(size_t)scancode];	
 	if(is_reading)
 	{
 		
@@ -38,7 +52,7 @@ static void keyboard_callback(registers_t regs)
 			terminal_putchar(ascii);
 			return;
 		}
-		if(ascii == '\b')
+		else if(ascii == '\b')
 		{
 			int32_t index = --char_index;
 			if(index < 0)
@@ -52,15 +66,31 @@ static void keyboard_callback(registers_t regs)
 			terminal_putchar(ascii);
 			return;
 		}
-		else
+		else if(isprint(ascii) || ascii == '\t') //we can have tab too, but nothing else
 		{
 			terminal_putchar(ascii);
 			input_buffer[char_index++] = ascii;
 		}
+		else
+		{
+			//TODO: handle special chars
+		}
+		
 	}
 }
 
 void init_keyboard()
 {
+	
+//fix later
+//	do 
+//	{
+//		outb(0x64, 0xF3);
+//		while(!(inb(0x64) & 1<<1)) ;
+//		outb(0x64, 0b01111110);
+//		terminal_write_hex(inb(0x60));
+//	} while (inb(0x60) != 0xFA);
+	
+	
 	register_interrupt_handler(IRQ1, &keyboard_callback);
 }

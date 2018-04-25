@@ -4,7 +4,7 @@
 
 #define MAX_SCANCODE 0xA6
 
-#include "common.h"
+#include <stdlib.h>
 
 
 static const char scancodes[] = 
