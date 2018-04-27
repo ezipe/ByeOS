@@ -14,7 +14,7 @@ typedef struct queue_entry queue_entry_t;
 
 static queue_entry_t queue[QUEUE_SIZE]; 
 
-int add_cmd(queue_entry_t entry);
-void run_cmds();
+int add_cmd(uint8_t port, uint8_t cmd);
+int run_cmds();
 
 #endif

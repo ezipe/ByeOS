@@ -1,6 +1,7 @@
 #include "kbd.h"
 #include <x86/isr.h>
 #include "../vga.h"
+#include "cmd_queue.h"
 
 static char res[256];
 
@@ -8,6 +9,7 @@ char* read_line()
 {
 	is_reading = true;
 	while(is_reading);
+	
 	
 	if(char_index < 0){char_index = 0; return NULL; }
 	
@@ -39,8 +41,7 @@ static void keyboard_callback(registers_t regs)
 	char status = inb(0x64);
     char scancode = get_scancode();
 	
-	if(scancode < 0)
-		return;
+	
 	char ascii = scancodes[(size_t)scancode];	
 	if(is_reading)
 	{
@@ -82,14 +83,13 @@ static void keyboard_callback(registers_t regs)
 void init_keyboard()
 {
 	
-//fix later
-//	do 
-//	{
-//		outb(0x64, 0xF3);
-//		while(!(inb(0x64) & 1<<1)) ;
-//		outb(0x64, 0b01111110);
-//		terminal_write_hex(inb(0x60));
-//	} while (inb(0x60) != 0xFA);
+
+	
+		add_cmd(0x64, 0xF3);
+		while(!(inb(0x64) & 1<<1)) ;
+		add_cmd(0x64, 0b01111110);
+		terminal_write_hex(inb(0x60));
+
 	
 	
 	register_interrupt_handler(IRQ1, &keyboard_callback);

@@ -2,6 +2,7 @@
 #include <drivers/input/kbd.h>
 #include <drivers/vga.h>
 #include <drivers/power.h>
+#include <drivers/timer.h>
 #include <stdlib.h>
 
 static bool debug = false;
@@ -32,7 +33,8 @@ void run_shell(void)
 		}
 		else if(strcmp(input, "restart") == 0)
 			restart();
-		
+		else if(strcmp(input, "timer") == 0)
+			terminal_write_dec(get_tick());
 		if(debug)
 		{
 			if(input == NULL)

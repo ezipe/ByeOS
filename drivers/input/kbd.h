@@ -185,7 +185,7 @@ static const char scancodes[] =
 static volatile bool is_reading = false;
 static int16_t char_index = 0;
 
-static volatile char input_buffer[256];
+static char input_buffer[256];
 
 void init_keyboard();
 char* read_line();

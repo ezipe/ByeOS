@@ -18,6 +18,7 @@ default:
 	cd kernel; make
 	$(LD) $(LDFLAGS) boot/obj/*.o kernel/obj/*.o stdlib/obj/*.o x86/obj/*.o \
 									 drivers/obj/*.o \
+									 drivers/obj/input/*.o \
 									 -o final.bin \
 									 
 	cp final.bin grubimg/boot/final.bin
