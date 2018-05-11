@@ -182,10 +182,22 @@ static const char scancodes[] =
 	
 };
 
-static volatile bool is_reading = false;
-static int16_t char_index = 0;
+#define BUFFER_SIZE 256
 
-static char input_buffer[256];
+volatile enum 
+{
+	WAITING,
+	KEYCODE_RECEIVED,
+	CTRL_CHAR_RECEIVED,
+	NEWLINE_RECEIVED
+	
+} state;
+
+
+
+static size_t char_index = 0;
+
+static uint8_t input_buffer[BUFFER_SIZE];
 
 void init_keyboard();
 char* read_line();
