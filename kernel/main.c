@@ -3,7 +3,7 @@
 #endif
 
 #include "drivers/vga.h" 
-#include "drivers/ps2.h"
+#include "drivers/input/ps2.h"
 #include "drivers/timer.h"
 #include "x86/descriptor_tables.h"
 #include "shell.h"
@@ -13,7 +13,7 @@ static uint64_t mem;
  
 void kmain(multiboot_info_t *mboot) 
 {
-
+	asm volatile("cli");
 	
 	init_descriptor_tables();
 	
@@ -21,8 +21,11 @@ void kmain(multiboot_info_t *mboot)
 	terminal_initialize();
 	terminal_setcolor(vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK));
 
+	
+	terminal_write_hex(init_ps2());
+	terminal_writestring("\n");
+	
 	init_timer(60);
-	init_ps2();
 	
 	if(mboot->flags & (1<<0))
 	{
@@ -33,8 +36,6 @@ void kmain(multiboot_info_t *mboot)
 	}
 	
 	asm volatile("sti");
-
-	
 	
 	run_shell();
 	

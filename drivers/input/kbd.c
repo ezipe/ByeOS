@@ -38,9 +38,15 @@ static char get_scancode()
 
 static void keyboard_callback(registers_t regs)
 {
+
 	char status = inb(0x64);
-    char scancode = get_scancode();
+    char scancode = inb(0x60);
 	
+	if(scancode < 0) return;
+	//kb is sending set 1 i have codes for set 2
+	
+	terminal_write_hex(scancode);
+	terminal_putchar('\n');
 	
 	char ascii = scancodes[(size_t)scancode];	
 	if(is_reading)
@@ -83,13 +89,12 @@ static void keyboard_callback(registers_t regs)
 void init_keyboard()
 {
 	
-
 	
-		add_cmd(0x64, 0xF3);
-		while(!(inb(0x64) & 1<<1)) ;
-		add_cmd(0x64, 0b01111110);
-		terminal_write_hex(inb(0x60));
-
+	add_cmd(0x60, 0xF0);
+	add_cmd(0x60, 1);
+	
+	
+		
 	
 	
 	register_interrupt_handler(IRQ1, &keyboard_callback);

@@ -4,23 +4,17 @@
 #include "vga.h"
 #include "input/cmd_queue.h"
 
-#define debug_breakpoint asm volatile("xchgw %bx, %bx")
+
 
 uint32_t tick = 0;
 
 static void timer_callback(registers_t regs)
 {
-	debug_breakpoint;
 	tick++;
 	int res = run_cmds();
-	if(tick % 60 == 0)
-	{
-		terminal_write_dec(res);
-		terminal_writestring("\n");
-	}
-//	terminal_writestring("Tick: ");
-//    terminal_write_dec(tick);
-//    terminal_writestring("\n");
+//	terminal_write_dec(res);
+//	if((tick % 60) == 0)
+//		terminal_write_dec(run_cmds());
 }
 
 uint32_t get_tick()
