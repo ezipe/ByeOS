@@ -56,11 +56,15 @@ static void terminal_scroll()
 
 	}
 }
- 
+
 void terminal_putchar(char c) 
 {
 	if(c == '\0')
+	#ifdef DISPLAY_NULLS_VGA
+		terminal_writestring("NUL");
+	#else
 		return;
+	#endif
 	if(c == '\b')
 	{
 		if(cursor_x-- <= 0)

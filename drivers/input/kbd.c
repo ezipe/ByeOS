@@ -5,65 +5,78 @@
 
 static char res[256];
 
-
+char read_char();
 
 char* read_line()
 {
+	memset(res, 0, sizeof(res));
 	state = WAITING;
-	while(state != NEWLINE_RECEIVED);
-	
-	
-	memset(res, 0, 256);
-	uint8_t index = 0;
-	for(uint8_t* i = input_buffer; *i != 0; i++)
+	size_t index = 0;
+	while(state != NEWLINE_RECEIVED)
 	{
-		res[index++] = i;
+		char c = read_char();
+		if(c == '\b')
+		{
+			if(index != 0)
+				res[--index] = 0; 
+			
+				
+		}
+		else if(c && c != '\n')
+			res[index++] = c;
+		
 	}
 	
-	memset(input_buffer, 0, char_index);
 	
-	char_index = 0;
 	
 	return res;
 }
 
-static uint8_t prev_scancode;
 
-static void keyboard_callback(registers_t regs)
+
+char read_char()
 {
-
-	char status = inb(0x64);
-    char scancode = inb(0x60);
+	size_t index = buffer_pos % BUFFER_SIZE;
 	
-	if(state == WAITING)
-	{
-		
-		state = SCANCODE_RECIEVED;
-		prev_scancode = scancode;
-		
-	}
-	else if(state == SCANCODE_RECIEVED)
-	{
-		input_buffer[(char_index++ % BUFFER_SIZE)] = prev_scancode;
-		if(prev_scancode == 0x5A)
-			state = NEWLINE_RECEIVED;
-		else
+	while(scancode_buffer[index] == 0) ;
+	uint8_t code = scancode_buffer[index];
+	
+	scancode_buffer[index] = 0;
+	buffer_pos++;
+	char res = 0;
+	if(!(code & 0x80))
+	{		
+		if(state == BREAK_CODE_RECEIVED)
+		{
 			state = WAITING;
+			return 0;
+		}
 		
-		state = WAITING;
+		res = scancodes[code];
+		
+		if(res == '\n')
+		{
+			state = NEWLINE_RECEIVED;
+		}
+		else
+		{
+			state = WAITING;
+		}
+		
+		terminal_putchar(res);
 	}
+	else
+	{
+		state = BREAK_CODE_RECEIVED;
+	}
+	
+	
+	
+	return res;
 }
 
 void init_keyboard()
 {
-	
-	
-	add_cmd(0x60, 0xF0);
-	add_cmd(0x60, 1);
-	
-	
-		
-	
-	
-	register_interrupt_handler(IRQ1, &keyboard_callback);
+	buffer_pos = 0;
+	init_keyboard_interrupt_handler();
 }
