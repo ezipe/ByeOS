@@ -35,6 +35,38 @@ void run_shell(void)
 			restart();
 		else if(strcmp(input, "timer") == 0)
 			terminal_write_dec(get_tick());
+		else if(strcmp(input, "laureloryanny")
+		{
+			while(true)
+			{
+				puts("laurel or yanny?");
+				char* response = read_line();
+				if(strcmp(response, "laurel") == 0)
+				{
+					puts("you are incredibly intelligent! congrats");
+					break;
+				}
+				else if(strcmp(response, "yanny") == 0)
+				{
+					puts("silly child, its laurel! u stupid");
+				}
+			}
+		}
+		else if(strcmp(input, "help") == 0)
+		{
+			puts("ByeOS v0.0.1");
+			puts("Commands list");
+			puts("-------------------");
+			puts("Command										Function\n");
+			puts("traps are gay:								Explains to you how traps aren't gay.");
+			puts("clear:										Clears the current text on shell.");
+			puts("debug:										Toggles debug mode on and off.");
+			puts("restart:										Reboots the system.");
+			puts("timer:										Debug command that displays how many ticks have passed since boot.");
+			puts("laureloryanny:								Initiates laurel or yanny question for user to answer.");
+			puts("	laurel:										Tells you that you are intelligent.");
+			puts("	yanny:										Tells you how stupid you are.");
+		}
 		if(debug)
 		{
 			if(input == NULL)
