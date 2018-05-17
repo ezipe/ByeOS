@@ -1,17 +1,15 @@
 %macro ISR_NOERRORCODE 1 ; define a macro, taking 1 parameter
 	[GLOBAL isr%1] ; %1 accesses the first parameter
 	isr%1:
-		cli
 		push BYTE 0
-		push BYTE %1
+		push %1
 		jmp isr_common_stub
 %endmacro
 
 %macro ISR_ERRORCODE 1
 	[GLOBAL isr%1]
 	isr%1:
-		cli
-		push BYTE %1
+		push %1
 		jmp isr_common_stub
 %endmacro
 
@@ -63,17 +61,21 @@ isr_common_stub:
 	mov fs, ax
 	mov gs, ax
 	
+	cld
+	push esp
+	
 	call isr_handler
 	
-	pop eax
-	mov ds, ax
-	mov es, ax
-	mov fs, ax
-	mov gs, ax
+	pop ebx
+	
+	pop ebx
+	mov ds, bx
+	mov es, bx
+	mov fs, bx
+	mov gs, bx
 	
 	popa
 	add esp, 8
-	sti
 	iret
 
 %macro IRQ 2
@@ -116,7 +118,12 @@ irq_common_stub:
 	mov fs, ax
 	mov gs, ax
 	
+	cld
+	push esp
+	
 	call irq_handler
+	
+	pop ebx
 	
 	pop ebx
 	mov ds, bx
@@ -126,5 +133,4 @@ irq_common_stub:
 	
 	popa
 	add esp, 8
-	sti
 	iret

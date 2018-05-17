@@ -4,7 +4,7 @@
 
 static volatile size_t current_scancode_pos;
 
-static void keyboard_callback(registers_t regs)
+static void keyboard_callback(registers_t* regs)
 {
 
 	uint8_t status = inb(0x64);
@@ -20,7 +20,7 @@ static void keyboard_callback(registers_t regs)
 
 void init_keyboard_interrupt_handler()
 {
-	memset(scancode_buffer, 0, BUFFER_SIZE);
+	memset((uint8_t*)scancode_buffer, 0, BUFFER_SIZE);
 	current_scancode_pos = 0;	
 	register_interrupt_handler(IRQ1, &keyboard_callback);
 }

@@ -5,6 +5,7 @@
 #include "drivers/vga.h" 
 #include "drivers/input/ps2.h"
 #include "drivers/timer.h"
+#include "x86/exceptions.h"
 #include "x86/descriptor_tables.h"
 #include "shell.h"
 #include "multiboot.h" 
@@ -35,7 +36,11 @@ void kmain(multiboot_info_t *mboot)
 		terminal_writestring(" MB\n");
 	}
 	
+	enable_exception_handling();
+	
 	asm volatile("sti");
+	
+	asm volatile("int $0x4");
 	
 	run_shell();
 	

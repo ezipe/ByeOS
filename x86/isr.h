@@ -18,9 +18,11 @@
 #define IRQ14 46
 #define IRQ15 47
 
-
+#define DEBUG_REGS 1
 
 #include <stdlib.h>
+
+#include <drivers/vga.h>
 
 typedef struct registers
 {
@@ -30,12 +32,16 @@ typedef struct registers
 	uint32_t eip, cs, eflags, esp, ss;
 } registers_t;
 //enables callbacks
-typedef void (*isr_t)(registers_t);
+typedef void (*isr_t)(registers_t*);
 
 #define ISR_ENTRY_NUM 256
 
 isr_t interrupt_handlers[ISR_ENTRY_NUM];
 
 void register_interrupt_handler(uint8_t n, isr_t handler);
+
+#ifdef DEBUG_REGS
+void register_dump(registers_t* regs);
+#endif
 
 #endif
