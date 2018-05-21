@@ -20,11 +20,21 @@ struct page_table
 };
 typedef struct page_table page_table_t;
 
-extern void set_page_directory(unsigned int*);
-extern void enable_paging();
-extern void disable_paging();
+struct page_directory
+{
+	page_table_t *tables[1024];
+	uint32_t tables_physical[1024];
+	uint32_t physical_addr;
+};
+typedef struct page_directory page_directory_t;
+
+void set_page_directory(page_directory_t*);
+void enable_paging();
+void disable_paging();
 
 void init_paging();
+
+page_t* get_page(uint32_t address, int make, page_directory_t*
 
 extern uint64_t KERNEL_VIRTUAL_BASE;
 

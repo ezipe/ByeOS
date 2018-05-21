@@ -11,7 +11,7 @@
 #include "shell.h"
 #include "multiboot.h" 
  
-static uint64_t mem; 
+uint64_t total_mem; 
  
 void kmain(multiboot_info_t *mboot) 
 {
@@ -33,8 +33,8 @@ void kmain(multiboot_info_t *mboot)
 	if(mboot->flags & (1<<0))
 	{
 		terminal_writestring("MEMORY: ");
-		mem = ((uint64_t)mboot->mem_upper) + mboot->mem_lower;
-		terminal_write_dec(mem / 1024);
+		total_mem = ((uint64_t)mboot->mem_upper) + mboot->mem_lower;
+		terminal_write_dec(total_mem / 1024);
 		terminal_writestring(" MB\n");
 	}
 	
