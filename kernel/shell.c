@@ -7,6 +7,9 @@
 
 static bool debug = false;
 
+extern uint64_t total_mem;
+extern uint32_t KERNEL_END;
+ 
 void run_shell(void)
 {
 	while(true)
@@ -17,13 +20,8 @@ void run_shell(void)
 		
 		
 		
-		if(strcmp(input,"traps are gay") == 0)
-		{
-			puts("\nOK, can we get ONE thing straight?\nAnybody, and I mean ANYBODY, who says this");
-			puts("is simply in denial of how straight they are.\nThey WANT to think that they are gay, but they aren't.");
-			puts("So there, scrub. Traps are 100% NOT GAY");
-		}
-		else if(strcmp(input, "clear") == 0)
+	
+		if(strcmp(input, "clear") == 0)
 			terminal_clear();
 		else if(strcmp(input, "debug") == 0)
 		{
@@ -35,6 +33,7 @@ void run_shell(void)
 			restart();
 		else if(strcmp(input, "timer") == 0)
 			terminal_write_dec(get_tick());
+		//Param wrote these. These are commands that can be executed through the shell.
 		else if(strcmp(input, "laureloryanny") == 0)
 		{
 			while(true)
@@ -66,6 +65,7 @@ void run_shell(void)
 			puts("laureloryanny:								Initiates laurel or yanny question for user to answer.");
 			puts("	laurel:										Tells you that you are intelligent.");
 			puts("	yanny:										Tells you how stupid you are.");
+			puts("memory:										Displays how much memory is being used currently.");
 		}
 		if(debug)
 		{
@@ -78,6 +78,16 @@ void run_shell(void)
 			terminal_writestring(input);
 			terminal_writestring("\n");
 		}
+		else if(strcmp(input, "memory") == 0)
+		{
+			terminal_writestring("You are using ");
+			terminal_write_dec((total_mem - KERNEL_END) / 1024);
+			terminal_writestring("MB/");
+			terminal_write_dec(total_mem / 1024);
+			terminal_writestring("MB\n");
+		}
+		
+		
 		
 		
 	}
