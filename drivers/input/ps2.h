@@ -2,7 +2,7 @@
 #define PS2_H
 
 #include "kbd.h"
-#include <stdlib.h>
+#include <libk.h>
 #include "../vga.h"
 
 void ps2_wait_in();

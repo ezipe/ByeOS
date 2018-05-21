@@ -7,6 +7,7 @@
 #include "drivers/timer.h"
 #include "x86/exceptions.h"
 #include "x86/descriptor_tables.h"
+#include "x86/paging/paging.h"
 #include "shell.h"
 #include "multiboot.h" 
  
@@ -17,7 +18,8 @@ void kmain(multiboot_info_t *mboot)
 	asm volatile("cli");
 	
 	init_descriptor_tables();
-	
+	enable_exception_handling();
+	init_paging();
 	
 	terminal_initialize();
 	terminal_setcolor(vga_entry_color(VGA_COLOR_GREEN, VGA_COLOR_BLACK));
@@ -36,11 +38,10 @@ void kmain(multiboot_info_t *mboot)
 		terminal_writestring(" MB\n");
 	}
 	
-	enable_exception_handling();
+	
 	
 	asm volatile("sti");
 	
-	asm volatile("int $0x4");
 	
 	run_shell();
 	

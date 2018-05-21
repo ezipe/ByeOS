@@ -1,4 +1,4 @@
-#include "stdlib.h"
+#include "libk.h"
 
 #include <drivers/vga.h>
 
@@ -29,6 +29,22 @@ uint16_t inw(uint16_t port)
    asm volatile ("inw %1, %0" : "=a" (ret) : "dN" (port));
    return ret;
 } 
+
+uint32_t kmalloc(uint32_t size, bool aligned)
+{
+	if(aligned)
+		return _kmalloc_a(size);
+	
+	return _kmalloc(size);
+}
+uint32_t kmalloc_phys(uint32_t size, bool aligned, uint32_t* phys)
+{
+	if(aligned)
+		return _kmalloc_ap(size, phys);
+	
+	return _kmalloc_p(size, phys);
+}
+
 
 void *memset(void *s, int c, size_t n)
 {

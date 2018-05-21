@@ -3,7 +3,7 @@
 #include <drivers/vga.h>
 #include <drivers/power.h>
 #include <drivers/timer.h>
-#include <stdlib.h>
+#include <libk.h>
 
 static bool debug = false;
 
@@ -35,7 +35,7 @@ void run_shell(void)
 			restart();
 		else if(strcmp(input, "timer") == 0)
 			terminal_write_dec(get_tick());
-		else if(strcmp(input, "laureloryanny")
+		else if(strcmp(input, "laureloryanny") == 0)
 		{
 			while(true)
 			{

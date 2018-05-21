@@ -1,7 +1,7 @@
 #ifndef KEYBOARD_INT_H
 #define KEYBOARD_INT_H
 
-#include <stdlib.h>
+#include <libk.h>
 #include <x86/isr.h>
 
 #define BUFFER_SIZE 256

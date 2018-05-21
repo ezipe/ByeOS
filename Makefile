@@ -17,6 +17,7 @@ default:
 	cd drivers; make
 	cd kernel; make
 	$(LD) $(LDFLAGS) boot/obj/*.o kernel/obj/*.o stdlib/obj/*.o x86/obj/*.o \
+									 x86/obj/mm/*.o \
 									 drivers/obj/*.o \
 									 drivers/obj/input/*.o \
 									 -o final.bin \

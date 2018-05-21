@@ -2,34 +2,38 @@
 
 static void pagefault_callback(registers_t* regs)
 {
-	puts("PAGE FAULT");
+	
+	uint32_t faulting_address;
+	asm volatile("mov %%cr2, %0" : "=r" (faulting_address));
+	int present = !(regs->err_code & 0x1);
+	int rw = regs->err_code & 0x2;
+	int us = regs->err_code & 0x4;
+	int reserved = regs->err_code & 0x8;
+	int id = regs->err_code & 0x10;
+	
 	#ifdef DEBUG_REGS
 	register_dump(regs);
-	#else
-	terminal_writestring("ERROR CODE ");
-	terminal_write_hex(regs->err_code);
-	terminal_writestring("\n");
 	#endif
 	
-	while(true)
-	{	
-		asm volatile("cli\n\t");
-		asm volatile("hlt\n\t");
-	}
+	terminal_writestring("Page fault! (");
+	if(present) {terminal_writestring("present ");}
+	if(rw) {terminal_writestring("read-only ");}
+	if(us) {terminal_writestring("user-mode ");}
+	if(reserved) {terminal_writestring("reserved ");}
+	terminal_writestring(") at ");
+	terminal_write_hex(faulting_address);
+	terminal_writestring("\n");
+	
+	PANIC("Page Fault");
 }
 
 static void gpf_callback(registers_t* regs)
 {
-	puts("GENERAL PROTECTION FAULT");
 	#ifdef DEBUG_REGS
 	register_dump(regs);
 	#endif
 	
-	while(true)
-	{	
-		asm volatile("cli\n\t");
-		asm volatile("hlt\n\t");
-	}
+	PANIC("GPF");
 }
 
 void enable_exception_handling()

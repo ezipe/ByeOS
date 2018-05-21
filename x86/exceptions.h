@@ -3,7 +3,7 @@
 
 #include "isr.h"
 #include <drivers/vga.h>
-#include <stdlib.h>
+#include <libk.h>
 
 void enable_exception_handling();
 

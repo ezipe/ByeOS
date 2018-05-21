@@ -4,7 +4,7 @@
 
 #define MAX_SCANCODE 0xA6
 
-#include <stdlib.h>
+#include <libk.h>
 #include "kbdint.h"
 
 static const char scancodes[] = 

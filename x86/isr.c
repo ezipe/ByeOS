@@ -62,11 +62,7 @@ void isr_handler(registers_t* regs)
 		
 		register_dump(regs);
 		
-		while(true)
-		{
-			asm volatile("cli\n\t");
-			asm volatile("hlt\n\t");
-		}
+		PANIC("");
 	}
 }
 

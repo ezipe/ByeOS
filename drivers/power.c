@@ -1,6 +1,6 @@
 #include "power.h"
 
-#include <stdlib.h>
+#include <libk.h>
 //TODO: Use better power management instead of this hack
 void restart(void)
 {

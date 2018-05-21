@@ -20,7 +20,7 @@
 
 #define DEBUG_REGS 1
 
-#include <stdlib.h>
+#include <libk.h>
 
 #include <drivers/vga.h>
 

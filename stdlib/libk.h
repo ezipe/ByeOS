@@ -5,6 +5,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#include <x86/mm/kheap.h>
+
+#define PANIC(x) terminal_setcolor(vga_entry_color(VGA_COLOR_RED, VGA_COLOR_BLACK)); 	\
+				 terminal_writestring("KERNEL PANIC: "); 								\
+				 puts(x);																\
+				 while(true) 															\
+				 { 																		\
+					asm volatile("cli\n\t"); 											\
+					asm volatile("hlt\n\t"); 											\
+				 }
+				
 #define debug_breakpoint() asm volatile("xchgw %bx, %bx")
 
 void outb(uint16_t port, uint8_t value);
@@ -22,5 +33,9 @@ size_t strlen(const char* str);
 
 int putchar(int c);
 int puts(const char *s);
+
+uint32_t kmalloc(uint32_t size, bool aligned);
+uint32_t kmalloc_phys(uint32_t size, bool aligned, uint32_t* phys);
+
 
 #endif

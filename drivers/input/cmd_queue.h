@@ -1,7 +1,7 @@
 #ifndef CMD_QUEUE_H
 #define CMD_QUEUE_H
 
-#include <stdlib.h>
+#include <libk.h>
 
 #define QUEUE_SIZE 16 // no more than 32 bytes of queue should be good -- fine tune later
 

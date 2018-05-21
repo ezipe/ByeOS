@@ -1,5 +1,5 @@
 #include "vga.h"
-#include <stdlib.h>
+#include <libk.h>
  
 
  
@@ -10,7 +10,11 @@ void terminal_initialize(void)
 	cursor_y = 0;
 	cursor_x = 0;
 	terminal_color = vga_entry_color(VGA_COLOR_LIGHT_GREY, VGA_COLOR_BLACK);
-	terminal_buffer = (uint16_t*) 0xC00B8000;
+	#ifdef HIGHER_HALF
+		terminal_buffer = (uint16_t*) 0xC00B8000;
+	#else
+		terminal_buffer = (uint16_t*) 0xB8000;
+	#endif
 	terminal_clear();
 }
  
